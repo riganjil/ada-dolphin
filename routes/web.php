@@ -16,12 +16,7 @@ $router->get('/', function () use ($router) {
 });
 
 
-$router->post(
-    'auth/login',
-    [
-        'uses' => 'AuthController@authenticate'
-    ]
-);
+$router->post('auth/login',['uses' => 'AuthController@authenticate']);
 
 $router->group(
     ['middleware' => 'jwt.auth'],
@@ -29,6 +24,16 @@ $router->group(
         $router->get('users', function() {
             $users = \App\User::all();
             return response()->json($users);
+        });
+
+        $router->group(['prefix' => 'checklist'], function ($router){
+            $router->post('complete',['uses' => 'ChecklistController@complete_post']);
+            $router->post('incomplete',['uses' => 'ChecklistController@incomplete_post']);
+        });
+
+        $router->group(['prefix' => 'service'], function ($router){
+            $router->get('/',['uses' => 'ServiceController@index']);
+            $router->post('incomplete',['uses' => 'ChecklistController@incomplete_post']);
         });
     }
 );

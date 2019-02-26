@@ -50,18 +50,18 @@ class AuthController extends BaseController
      */
     public function authenticate(User $user) {
         $this->validate($this->request, [
-            'email'     => 'required|email',
+            'username'     => 'required',
             'password'  => 'required'
         ]);
         // Find the user by email
-        $user = User::where('email', $this->request->input('email'))->first();
+        $user = User::where('username', $this->request->input('username'))->first();
         if (!$user) {
             // You wil probably have some sort of helpers or whatever
             // to make sure that you have the same response format for
             // differents kind of responses. But let's return the
             // below respose for now.
             return response()->json([
-                'error' => 'Email does not exist.'
+                'error' => 'Username does not exist.'
             ], 400);
         }
         // Verify the password and generate the token
@@ -72,7 +72,7 @@ class AuthController extends BaseController
         }
         // Bad Request response
         return response()->json([
-            'error' => 'Email or password is wrong.'
+            'error' => 'Username or password is wrong.'
         ], 400);
     }
 }

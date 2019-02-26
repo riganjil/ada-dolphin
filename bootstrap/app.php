@@ -97,6 +97,9 @@ $app->routeMiddleware([
 |
 */
 
+
+$app->configure('constants');
+
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
